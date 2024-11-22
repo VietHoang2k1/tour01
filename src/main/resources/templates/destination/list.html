@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Danh sách Địa điểm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .table-cell {
+            max-width: 150px; /* Giới hạn độ rộng của ô */
+            white-space: nowrap; /* Không cho phép xuống dòng */
+            overflow: hidden; /* Ẩn phần nội dung vượt quá giới hạn */
+            text-overflow: ellipsis; /* Hiển thị dấu "..." khi nội dung quá dài */
+        }
+
+        .table-cell:hover {
+            overflow: visible; /* Hiển thị toàn bộ nội dung khi hover */
+            white-space: normal; /* Cho phép xuống dòng */
+            position: absolute; /* Đưa ra ngoài luồng để không làm ảnh hưởng bố cục */
+            background: white;
+            z-index: 10;
+            padding: 5px;
+            border: 1px solid #ddd;
+            max-width: 300px; /* Tùy chỉnh độ rộng hiển thị khi hover */
+        }
+    </style>
+
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center">Danh sách Địa điểm Du lịch</h1>
+    <a href="/admin/destinations/new" class="btn btn-primary mb-3">Thêm Địa điểm</a>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên</th>
+            <th>Mô tả</th>
+            <th>Địa chỉ</th>
+            <th>Hình ảnh</th>
+            <th>Video</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="destination : ${destinations}">
+            <td th:text="${destination.id}"></td>
+            <td class="table-cell" th:title="${destination.name}" th:text="${destination.name}"></td>
+            <td class="table-cell" th:title="${destination.description}" th:text="${destination.description}"></td>
+            <td class="table-cell" th:title="${destination.location}" th:text="${destination.location}"></td>
+            <td><img th:src="${destination.imageUrl}" alt="Image" width="100"></td>
+            <td>
+                <a th:href="${destination.videoUrl}" target="_blank">Xem Video</a>
+            </td>
+            <td>
+                <a th:href="@{/admin/destinations/{id}(id=${destination.id})}" class="btn btn-info">Chi tiết</a>
+                <a th:href="@{/admin/destinations/{id}/edit(id=${destination.id})}" class="btn btn-warning">Sửa</a>
+                <a th:href="@{/admin/destinations/{id}/delete(id=${destination.id})}" class="btn btn-danger"
+                   onclick="return confirm('Bạn có chắc chắn muốn xóa địa điểm này?')">Xóa</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
